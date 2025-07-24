@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMZY STORE - Hosting & Top Up Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --danger: #d63031;
+            --warning: #fdcb6e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .app-container {
+            max-width: 420px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-phone {
+            width: 250px;
+            height: 500px;
+            background: white;
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+            border: 10px solid #2d3436;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .slogan {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .login-form {
+            width: 100%;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5e4bd1, #8c7ae6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            bottom: 20px;
+            width: calc(100% - 40px);
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            padding-bottom: 70px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        /* Categories */
+        .categories {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px;
+            gap: 10px;
+            scrollbar-width: none;
+        }
+        
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .category {
+            min-width: 100px;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .category.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .category-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .category-name {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* Products */
+        .products {
+            padding: 0 15px 20px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .see-all {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            height: 120px;
+            background: #f5f6fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 40px;
+        }
+        
+        .product-content {
+            padding: 15px;
+        }
+        
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .product-desc {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 16px;
+        }
+        
+        .product-button {
+            display: inline-block;
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 420px;
+            margin: 0 auto;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            text-align: center;
+            color: #777;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 5px;
+            border-radius: 8px;
+            flex: 1;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 3px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+        
+        .modal-title {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .modal-close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group-modal {
+            margin-bottom: 15px;
+        }
+        
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary);
+            background: #f9f9ff;
+        }
+        
+        .payment-method.active {
+            border-color: var(--primary);
+            background: #f0f0ff;
+        }
+        
+        .payment-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .payment-details {
+            flex: 1;
+        }
+        
+        .payment-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .payment-info {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .qris-image {
+            width: 100%;
+            max-width: 200px;
+            margin: 10px auto;
+            display: block;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1001;
+            display: none;
+            max-width: 90%;
+            text-align: center;
+        }
+        
+        /* Floating Button */
+        .floating-button {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+            cursor: pointer;
+            z-index: 99;
+        }
+        
+        /* Background Circles */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .circle-1 {
+            width: 200px;
+            height: 200px;
+            top: -50px;
+            left: -50px;
+        }
+        
+        .circle-2 {
+            width: 300px;
+            height: 300px;
+            bottom: -100px;
+            right: -100px;
+        }
+        
+        /* Calculator */
+        .calculator {
+            padding: 15px;
+            background: #f9f9ff;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+        
+        .calculator-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .calculator-input {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .calculator-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            text-align: center;
+        }
+        
+        .calculator-unit {
+            padding: 10px;
+            background: #eee;
+            border-radius: 0 5px 5px 0;
+            font-size: 12px;
+        }
+        
+        .calculator-result {
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* Important Note */
+        .important-note {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            margin: 15px;
+            border-radius: 0 5px 5px 0;
+            font-size: 12px;
+            color: #5d4037;
+        }
+        
+        .important-note strong {
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="login-screen">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        
+        <div class="login-phone">
+            <div class="login-header">
+                <div class="logo">IMZY STORE</div>
+                <div class="slogan">Hosting & Top Up Game</div>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Masukkan username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Masukkan password">
+                </div>
+                
+                <button class="btn btn-primary" onclick="login()">MASUK</button>
+            </div>
+        </div>
+        
+        <div class="login-footer">
+            © 2023 IMZY STORE | WhatsApp: 6281376752537
+        </div>
+    </div>
+    
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <div class="header-content">
+                <div class="header-title">IMZY STORE</div>
+                <div class="header-icons">
+                    <i class="fas fa-search header-icon"></i>
+                    <i class="fas fa-shopping-cart header-icon"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="important-note">
+            <strong>NOTE:</strong> JIKA MEMBELI ROBUX/DIAMOND ML FF DAN RESELLER PANEL ATAU VPS JIKA BELUM DI PROSES HARAP HUBUNGI ADMIN DI WHATSAPP!
+        </div>
+        
+        <div class="categories">
+            <div class="category active" onclick="changeCategory('all')">
+                <div class="category-icon"><i class="fas fa-th-large"></i></div>
+                <div class="category-name">Semua</div>
+            </div>
+            <div class="category" onclick="changeCategory('hosting')">
+                <div class="category-icon"><i class="fas fa-server"></i></div>
+                <div class="category-name">Hosting</div>
+            </div>
+            <div class="category" onclick="changeCategory('vps')">
+                <div class="category-icon"><i class="fas fa-cloud"></i></div>
+                <div class="category-name">VPS</div>
+            </div>
+            <div class="category" onclick="changeCategory('robux')">
+                <div class="category-icon"><i class="fas fa-gamepad"></i></div>
+                <div class="category-name">Robux</div>
+            </div>
+            <div class="category" onclick="changeCategory('ml')">
+                <div class="category-icon"><i class="fas fa-mobile-alt"></i></div>
+                <div class="category-name">Mobile Legends</div>
+            </div>
+            <div class="category" onclick="changeCategory('ff')">
+                <div class="category-icon"><i class="fas fa-crosshairs"></i></div>
+                <div class="category-name">Free Fire</div>
+            </div>
+        </div>
+        
+        <div class="products">
+            <div class="section-title">
+                <span>Produk Terpopuler</span>
+                <span class="see-all">Lihat Semua</span>
+            </div>
+            
+            <div class="product-grid" id="product-grid">
+                <!-- Hosting Products 1GB - 10GB -->
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #e3f2fd;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 1GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 1GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp1.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 1GB', 'Rp10.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #e8f5e9;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 2GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 2GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp2.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 2GB', 'Rp20.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #fff3e0;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 3GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 3GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp3.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 3GB', 'Rp30.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #f3e5f5;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 4GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 4GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp4.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 4GB', 'Rp40.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #e0f7fa;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 5GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 5GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp5.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 5GB', 'Rp50.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #e3f2fd;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 6GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 6GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp6.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 6GB', 'Rp60.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #e8f5e9;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 7GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 7GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp7.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 7GB', 'Rp70.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #fff3e0;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 8GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 8GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp8.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 8GB', 'Rp80.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #f3e5f5;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 9GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 9GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp9.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 9GB', 'Rp90.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #e0f7fa;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting 10GB</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas 10GB, unlimited bandwidth</div>
+                        <div class="product-price">Rp12.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting 10GB', 'Rp100.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #e3f2fd;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Panel Hosting Unlimited</div>
+                        <div class="product-desc">Panel hosting dengan kapasitas unlimited, unlimited bandwidth</div>
+                        <div class="product-price">Rp7.000</div>
+                        <div class="product-button" onclick="showOrderModal('Panel Hosting Unlimited', 'Rp150.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <!-- Special Hosting Panels -->
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #fff3e0;">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Reseller Panel</div>
+                        <div class="product-desc">Panel khusus reseller dengan fitur lengkap</div>
+                        <div class="product-price">Rp5.000</div>
+                        <div class="product-button" onclick="showOrderModal('Reseller Panel', 'Rp50.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #f3e5f5;">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Admin Panel</div>
+                        <div class="product-desc">Panel admin dengan akses penuh</div>
+                        <div class="product-price">Rp10.000</div>
+                        <div class="product-button" onclick="showOrderModal('Admin Panel', 'Rp100.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card hosting">
+                    <div class="product-image" style="background: #e0f7fa;">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Owner Panel</div>
+                        <div class="product-desc">Panel owner dengan semua fitur premium</div>
+                        <div class="product-price">Rp20.000</div>
+                        <div class="product-button" onclick="showOrderModal('Owner Panel', 'Rp200.000', 'hosting')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <!-- VPS Products from 2GB to 32 Core -->
+                <div class="product-card vps">
+                    <div class="product-image" style="background: #fff8e1;">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">VPS Basic 2GB</div>
+                        <div class="product-desc">1 Core CPU, 2GB RAM, 20GB SSD</div>
+                        <div class="product-price">Rp15.000</div>
+                        <div class="product-button" onclick="showOrderModal('VPS Basic 2GB', 'Rp100.000', 'vps')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card vps">
+                    <div class="product-image" style="background: #f3e5f5;">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">VPS Standard 4GB</div>
+                        <div class="product-desc">2 Core CPU, 4GB RAM, 40GB SSD</div>
+                        <div class="product-price">Rp40.000</div>
+                        <div class="product-button" onclick="showOrderModal('VPS Standard 4GB', 'Rp200.000', 'vps')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card vps">
+                    <div class="product-image" style="background: #e8f5e9;">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">VPS Pro 8GB</div>
+                        <div class="product-desc">4 Core CPU, 8GB RAM, 80GB SSD</div>
+                        <div class="product-price">Rp60.000</div>
+                        <div class="product-button" onclick="showOrderModal('VPS Pro 8GB', 'Rp400.000', 'vps')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card vps">
+                    <div class="product-image" style="background: #e0f7fa;">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">VPS Super 16GB</div>
+                        <div class="product-desc">8 Core CPU, 16GB RAM, 160GB SSD</div>
+                        <div class="product-price">Rp80.000</div>
+                        <div class="product-button" onclick="showOrderModal('VPS Super 16GB', 'Rp800.000', 'vps')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card vps">
+                    <div class="product-image" style="background: #e3f2fd;">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">VPS Ultimate 32GB</div>
+                        <div class="product-desc">16 Core CPU, 32GB RAM, 320GB SSD</div>
+                        <div class="product-price">Rp95.000</div>
+                        <div class="product-button" onclick="showOrderModal('VPS Ultimate 32GB', 'Rp1.600.000', 'vps')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <div class="product-card vps">
+                    <div class="product-image" style="background: #f3e5f5;">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">VPS 32 Core 8GB</div>
+                        <div class="product-desc">32 Core CPU, 8GB RAM, 160GB SSD</div>
+                        <div class="product-price">Rp120.000</div>
+                        <div class="product-button" onclick="showOrderModal('VPS 32 Core 8GB', 'Rp1.200.000', 'vps')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <!-- Robux Products with Calculator -->
+                <div class="product-card robux">
+                    <div class="product-image" style="background: #ffebee;">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Robux Calculator</div>
+                        <div class="calculator">
+                            <div class="calculator-title">Hitung Harga Robux</div>
+                            <div class="calculator-input">
+                                <input type="number" id="robux-amount" placeholder="Jumlah Robux" min="100" value="400" oninput="calculateRobux()">
+                                <div class="calculator-unit">Robux</div>
+                            </div>
+                            <div class="calculator-result" id="robux-result">Rp50.000</div>
+                        </div>
+                        <div class="product-button" onclick="showOrderModal('Robux Custom', 'Rp50.000', 'robux')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Legends Products with Calculator -->
+                <div class="product-card ml">
+                    <div class="product-image" style="background: #e8eaf6;">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">ML Diamond Calculator</div>
+                        <div class="calculator">
+                            <div class="calculator-title">Hitung Harga Diamond</div>
+                            <div class="calculator-input">
+                                <input type="number" id="ml-amount" placeholder="Jumlah Diamond" min="50" value="50" oninput="calculateML()">
+                                <div class="calculator-unit">Diamond</div>
+                            </div>
+                            <div class="calculator-result" id="ml-result">Rp15.000</div>
+                        </div>
+                        <div class="product-button" onclick="showOrderModal('ML Diamond Custom', 'Rp15.000', 'ml')">Beli Sekarang</div>
+                    </div>
+                </div>
+                
+                <!-- Free Fire Products with Calculator -->
+                <div class="product-card ff">
+                    <div class="product-image" style="background: #f1f8e9;">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">FF Diamond Calculator</div>
+                        <div class="calculator">
+                            <div class="calculator-title">Hitung Harga Diamond</div>
+                            <div class="calculator-input">
+                                <input type="number" id="ff-amount" placeholder="Jumlah Diamond" min="50" value="50" oninput="calculateFF()">
+                                <div class="calculator-unit">Diamond</div>
+                            </div>
+                            <div class="calculator-result" id="ff-result">Rp10.000</div>
+                        </div>
+                        <div class="product-button" onclick="showOrderModal('FF Diamond Custom', 'Rp10.000', 'ff')">Beli Sekarang</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="floating-button" onclick="showWhatsApp()">
+            <i class="fab fa-whatsapp"></i>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="navigateTo('home')">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div>Home</div>
+        </div>
+        <div class="nav-item" onclick="navigateTo('products')">
+            <div class="nav-icon"><i class="fas fa-store"></i></div>
+            <div>Produk</div>
+        </div>
+        <div class="nav-item" onclick="navigateTo('orders')">
+            <div class="nav-icon"><i class="fas fa-history"></i></div>
+            <div>Pesanan</div>
+        </div>
+        <div class="nav-item" onclick="navigateTo('account')">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div>Akun</div>
+        </div>
+    </div>
+    
+    <!-- Order Modal -->
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-close" onclick="hideModal('order-modal')">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="modal-title" id="modal-product-title">Pembelian Produk</div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group-modal">
+                    <label for="product-name">Produk</label>
+                    <input type="text" id="product-name" class="form-control" readonly>
+                </div>
+                <div class="form-group-modal">
+                    <label for="product-price">Harga</label>
+                    <input type="text" id="product-price" class="form-control" readonly>
+                </div>
+                
+                <div class="form-group-modal" id="username-field">
+                    <label for="game-username">Username Game</label>
+                    <input type="text" id="game-username" class="form-control" placeholder="Masukkan username game">
+                </div>
+                <div class="form-group-modal" id="id-field">
+                    <label for="game-id">ID Game</label>
+                    <input type="text" id="game-id" class="form-control" placeholder="Masukkan ID game">
+                </div>
+                
+                <div class="form-group-modal">
+                    <label>Metode Pembayaran</label>
+                    <div class="payment-methods">
+                        <div class="payment-method active" onclick="selectPayment('dana')">
+                            <div class="payment-icon"><i class="fas fa-wallet"></i></div>
+                            <div class="payment-details">
+                                <div class="payment-name">DANA</div>
+                                <div class="payment-info">081373070063 (IMZY STORE)</div>
+                            </div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment('qris')">
+                            <div class="payment-icon"><i class="fas fa-qrcode"></i></div>
+                            <div class="payment-details">
+                                <div class="payment-name">QRIS All Payment</div>
+                                <div class="payment-info">Scan kode QR untuk pembayaran</div>
+                            </div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment('gopay')">
+                            <div class="payment-icon"><i class="fab fa-google-pay"></i></div>
+                            <div class="payment-details">
+                                <div class="payment-name">GoPay</div>
+                                <div class="payment-info">081373070063 (IMZY STORE)</div>
+                            </div>
+                        </div>
+                        <div class="payment-method" onclick="selectPayment('bank')">
+                            <div class="payment-icon"><i class="fas fa-university"></i></div>
+                            <div class="payment-details">
+                                <div class="payment-name">Transfer Bank</div>
+                                <div class="payment-info">BCA, BRI, BNI, Mandiri</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="qris-container" style="display: none; text-align: center;">
+                    <img src="https://files.catbox.moe/efk1u6.jpg" alt="QRIS IMZY STORE" class="qris-image">
+                    <p style="font-size: 12px; color: #666;">Scan QRIS untuk pembayaran</p>
+                </div>
+                
+                <button class="btn btn-primary" onclick="placeOrder()">Konfirmasi Pembelian</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Current selected payment method
+        let currentPaymentMethod = 'dana';
+        let currentProductType = '';
+        let currentCustomPrice = '';
+        
+        // Login function
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if(!username || !password) {
+                showNotification('Harap isi username dan password');
+                return;
+            }
+            
+            // Hide login, show dashboard
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            showNotification('Login berhasil! Selamat datang di IMZY STORE');
+        }
+        
+        // Change category
+        function changeCategory(category) {
+            // Update active category
+            document.querySelectorAll('.category').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Show/hide products based on category
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                if(category === 'all') {
+                    product.style.display = 'block';
+                } else {
+                    if(product.classList.contains(category)) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        // Show order modal
+        function showOrderModal(name, price, type) {
+            document.getElementById('product-name').value = name;
+            document.getElementById('product-price').value = price;
+            currentProductType = type;
+            
+            // Show/hide fields based on product type
+            if(type === 'hosting' || type === 'vps') {
+                document.getElementById('username-field').style.display = 'none';
+                document.getElementById('id-field').style.display = 'none';
+            } else {
+                document.getElementById('username-field').style.display = 'block';
+                document.getElementById('id-field').style.display = 'block';
+            }
+            
+            // Reset payment method
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.classList.remove('active');
+            });
+            document.querySelector('.payment-method').classList.add('active');
+            currentPaymentMethod = 'dana';
+            document.getElementById('qris-container').style.display = 'none';
+            
+            document.getElementById('order-modal').style.display = 'flex';
+        }
+        
+        // Select payment method
+        function selectPayment(method) {
+            currentPaymentMethod = method;
+            
+            document.querySelectorAll('.payment-method').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            if(method === 'qris') {
+                document.getElementById('qris-container').style.display = 'block';
+            } else {
+                document.getElementById('qris-container').style.display = 'none';
+            }
+        }
+        
+        // Place order
+        function placeOrder() {
+            const productName = document.getElementById('product-name').value;
+            const productPrice = document.getElementById('product-price').value;
+            const paymentMethod = currentPaymentMethod === 'dana' ? 'DANA (081373070063)' : 
+                                 currentPaymentMethod === 'qris' ? 'QRIS' : 
+                                 currentPaymentMethod === 'gopay' ? 'GoPay' : 'Transfer Bank';
+            
+            let message = `Pesanan ${productName} seharga ${productPrice} berhasil dibuat!\n`;
+            message += `Metode Pembayaran: ${paymentMethod}\n\n`;
+            
+            if(currentProductType === 'robux' || currentProductType === 'ml' || currentProductType === 'ff') {
+                const username = document.getElementById('game-username').value;
+                const id = document.getElementById('game-id').value;
+                
+                if(!username || !id) {
+                    showNotification('Harap isi username dan ID game');
+                    return;
+                }
+                
+                message += `Username: ${username}\n`;
+                message += `ID Game: ${id}\n`;
+            }
+            
+            message += `Silahkan lakukan pembayaran dan konfirmasi ke WhatsApp: 6281376752537`;
+            
+            showNotification(message);
+            hideModal('order-modal');
+        }
+        
+        // Show WhatsApp
+        function showWhatsApp() {
+            window.open('https://wa.me/6281376752537', '_blank');
+        }
+        
+        // Hide modal
+        function hideModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Navigate between pages
+        function navigateTo(page) {
+            showNotification(`Navigasi ke ${page} (fitur dalam pengembangan)`);
+        }
+        
+        // Calculate Robux price
+        function calculateRobux() {
+            const amount = parseInt(document.getElementById('robux-amount').value) || 0;
+            const price = Math.ceil(amount * 125); // 125 IDR per Robux
+            document.getElementById('robux-result').textContent = `Rp${price.toLocaleString('id-ID')}`;
+            currentCustomPrice = price;
+        }
+        
+        // Calculate ML Diamond price
+        function calculateML() {
+            const amount = parseInt(document.getElementById('ml-amount').value) || 0;
+            const price = Math.ceil(amount * 300); // 300 IDR per Diamond
+            document.getElementById('ml-result').textContent = `Rp${price.toLocaleString('id-ID')}`;
+            currentCustomPrice = price;
+        }
+        
+        // Calculate FF Diamond price
+        function calculateFF() {
+            const amount = parseInt(document.getElementById('ff-amount').value) || 0;
+            const price = Math.ceil(amount * 200); // 200 IDR per Diamond
+            document.getElementById('ff-result').textContent = `Rp${price.toLocaleString('id-ID')}`;
+            currentCustomPrice = price;
+        }
+        
+        // Initialize calculators
+        window.onload = function() {
+            calculateRobux();
+            calculateML();
+            calculateFF();
+        };
+    </script>
+</body>
+</html>
